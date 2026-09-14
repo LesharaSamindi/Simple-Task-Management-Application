@@ -1,0 +1,6 @@
+services:
+  taskflow:
+    build: .
+    container_name: taskflow
+    ports:
+      - "5000:5000"

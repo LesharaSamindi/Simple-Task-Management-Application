@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TaskFlow - Task Manager</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header>
+            <h1>TaskFlow</h1>
+            <p>Simple Task Management Application</p>
+        </header>
+
+        <section class="add-task">
+            <h2>Add New Task</h2>
+
+            <form action="/add" method="POST">
+                <input
+                    type="text"
+                    name="title"
+                    placeholder="Enter a task..."
+                    required
+                >
+
+                <button type="submit">
+                    Add Task
+                </button>
+            </form>
+        </section>
+
+        <section class="task-section">
+
+            <h2>My Tasks</h2>
+
+            {% if tasks %}
+
+                <div class="task-list">
+
+                    {% for task in tasks %}
+
+                        <div class="task {% if task.completed %}completed{% endif %}">
+
+                            <div class="task-info">
+
+                                <span class="task-title">
+                                    {{ task.title }}
+                                </span>
+
+                                {% if task.completed %}
+                                    <span class="status">
+                                        Completed
+                                    </span>
+                                {% else %}
+                                    <span class="status pending">
+                                        Pending
+                                    </span>
+                                {% endif %}
+
+                            </div>
+
+                            <div class="actions">
+
+                                <form
+                                    action="/complete/{{ task.id }}"
+                                    method="POST"
+                                >
+                                    <button type="submit">
+                                        {% if task.completed %}
+                                            Undo
+                                        {% else %}
+                                            Complete
+                                        {% endif %}
+                                    </button>
+                                </form>
+
+                                <form
+                                    action="/delete/{{ task.id }}"
+                                    method="POST"
+                                >
+                                    <button
+                                        type="submit"
+                                        class="delete"
+                                    >
+                                        Delete
+                                    </button>
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <p class="empty">
+                    No tasks available.
+                </p>
+
+            {% endif %}
+
+        </section>
+
+    </div>
+
+</body>
+</html>
